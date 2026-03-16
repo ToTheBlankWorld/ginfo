@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-clay-50 to-clay-100 text-gray-900;
+  }
+
+  h1 {
+    @apply text-3xl font-bold text-gray-900;
+  }
+
+  h2 {
+    @apply text-2xl font-semibold text-gray-900;
+  }
+}
+
+@layer components {
+  .clay-card {
+    @apply rounded-3xl bg-white/80 backdrop-blur-clay shadow-clay transition-all duration-300 hover:shadow-clay-lg hover:scale-105;
+  }
+
+  .clay-button {
+    @apply rounded-2xl px-6 py-3 font-semibold transition-all duration-300 hover:shadow-clay;
+  }
+
+  .clay-button-primary {
+    @apply clay-button bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:from-blue-700 hover:to-blue-600;
+  }
+
+  .clay-button-secondary {
+    @apply clay-button border-2 border-clay-300 bg-white text-clay-700 hover:bg-clay-50;
+  }
+
+  .clay-input {
+    @apply w-full rounded-2xl border-2 border-clay-200 bg-white/50 px-4 py-3 font-medium transition-all duration-300 placeholder:text-clay-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-100;
+  }
+}
+
+/* Smooth animations */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.5s ease-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
