@@ -1,146 +1,158 @@
-# Recent Updates - Dark/Light Mode & Auth Fixes
+# Recent Updates - Auth Fixes & Input Focus Improvement
 
-## 🔧 Fixed Issues
+## 🔧 Latest Fixes
 
-### 1. Email Verification Error Fixed
-**Problem**: OAuth login was failing with "Email not verified" error
-**Solution**: Removed strict email_verified check from Google token validation
-- File: `app/api/auth/verify/route.ts`
-- Now only checks for email existence, not verification status
-- ✅ Login should work smoothly now
+### 1. Search Input Focus Issue Fixed ✅
+**Problem**: When typing student names, the cursor would disappear after a few characters and require clicking to continue
+**Solution**:
+- Added ref-based focus management to SearchBar component
+- Focus is automatically restored when `isLoading` or `query` state changes
+- Users can now type continuously without interruption
+- File: `components/SearchBar.tsx`
 
-### 2. Next.js Configuration Warnings Fixed
-**Problem**: Invalid configuration options and deprecated viewport setup
-**Solutions**:
-- Removed `typescript.strict` from `next.config.ts` (not a valid option)
-- Moved `viewport` from metadata to separate `viewport` export in `app/layout.tsx`
-- File: `next.config.ts`, `app/layout.tsx`
+### 2. Removed GITAM Email-Only Restriction ✅
+**Problem**: Application was restricting access to @gitam.in and @student.gitam.edu emails only
+**Solution**:
+- Removed email domain verification check
+- Now accepts any valid Google account
+- Allows broader access to the student portal
+- Files Modified:
+  - `app/api/auth/verify/route.ts` - Removed domain check
+  - `app/login/page.tsx` - Updated messaging
+  - `.env.local` - Cleared ALLOWED_DOMAINS
 
----
+### 3. Google OAuth Configuration Ready ✅
+**Status**: Application ready for any Google account authentication
+**Domain Setup**:
+- Added `https://ginfo-three.vercel.app` to environment
+- Local development works with `http://localhost:3000`
+- OAuth flow fully functional
 
-## 🌓 Dark/Light Mode Implementation
-
-### New Components Added
-
-**1. ThemeProvider** (`components/ThemeProvider.tsx`)
-- Context-based theme management
-- Persistent theme storage in localStorage
-- System preference detection (if no saved preference)
-- Manages "light" | "dark" theme states
-
-**2. ThemeToggle** (`components/ThemeToggle.tsx`)
-- Button component with 🌙/☀️ icons
-- Located at top right of navbar
-- Toggles between light and dark modes
-- Smooth transitions
-
-### Updated Pages & Components
-
-**Dark Mode Classes Added To:**
-1. **app/login/page.tsx** - Login page with dark background and card styling
-2. **app/search/page.tsx** - Search page with dark gradient and result cards
-3. **app/student/[id]/page.tsx** - Student details page with dark card styling
-4. **components/Navbar.tsx** - Navigation bar with dark mode support
-5. **components/StudentCard.tsx** - Result cards with dark styling
-6. **components/SearchBar.tsx** - Input with dark mode styling
-
-### Tailwind Configuration Updated
-
-**tailwind.config.ts**
-- Added `darkMode: "class"` for class-based dark mode
-- Allows manual theme switching with `.dark` class
-
-**app/globals.css**
-- Added dark mode variants for all base and component classes
-- Dark backgrounds, text colors, and shadows
-- Smooth transitions between themes
-
-### How It Works
-
-1. User clicks theme toggle button (🌙/☀️) in top right
-2. Theme preference saved to localStorage
-3. HTML element gets `.dark` class added/removed
-4. Tailwind `dark:*` classes activate
-5. Theme persists across page reloads
+### 4. Build Fixes ✅
+**Resolved Issues**:
+- Fixed `useSearchParams()` Suspense boundary error in Next.js build
+- Created separate `SearchPageContent` component wrapped in Suspense
+- Removed unnecessary React Hook dependencies
+- All ESLint warnings resolved
 
 ---
 
-## 📝 Usage
+## 📝 Files Modified
 
-### Toggle Theme
-- Click the **🌙 moon icon** (light mode) or **☀️ sun icon** (dark mode) in top right corner
-- Theme preference is automatically saved
+### Core Files
+1. **components/SearchBar.tsx** - Added ref-based focus management
+   - Import `useRef`
+   - Added `inputRef` to track focus
+   - Auto-restore focus on state changes
 
-### Theme Persistence
-- Theme is saved to `localStorage` under key `"theme"`
-- On page reload, saved theme is applied
-- If no saved preference, system preference is used
+2. **app/api/auth/verify/route.ts** - Removed email domain restriction
+   - Removed `isAllowedEmail` import
+   - Removed domain verification check
+   - Accept all valid Google accounts
 
----
+3. **app/login/page.tsx** - Updated authentication messaging
+   - Changed text to reflect any Google account acceptance
+   - Updated note from GITAM-only to general access
 
-## 🎨 Color Scheme
+4. **.env.local** - Updated environment configuration
+   - Cleared `NEXT_PUBLIC_ALLOWED_DOMAINS` (allows all)
+   - Added `NEXT_PUBLIC_APP_URL=https://ginfo-three.vercel.app`
 
-### Light Mode
-- Background: Warm clay gradient (beige/tan)
-- Text: Dark gray/black
-- Cards: White with soft shadows
+5. **app/search/page.tsx** - Wrapped in Suspense boundary
+   - Main page now server component
+   - Created `SearchPageContent` client component
+   - Fixes useSearchParams() error
 
-### Dark Mode
-- Background: Gray gradient (dark gray to gray-800)
-- Text: White/light gray
-- Cards: Gray-800 with subtle shadows
-- Borders: Gray-700
+6. **app/search/search-content.tsx** - New client component
+   - Contains all search functionality
+   - Properly wrapped by Suspense boundary
 
----
-
-## 🔐 Fixed Auth Issues
-
-The "Email not verified" error was preventing login. This has been resolved by:
-- Checking only email existence, not verification status
-- Google OAuth implicitly verifies emails
-- More reliable authentication flow
-
-**Try logging in again** - it should work now! ✅
+### Documentation Updated
+- **README.md** - Removed GITAM-only references
+- **GOOGLE_OAUTH_SETUP.md** - Updated authentication flow docs
+- **Project documentation** - Clarified open access policy
 
 ---
 
-## 📦 Files Modified
+## 🎯 Features Now Available
 
-1. `app/api/auth/verify/route.ts` - Auth fix
-2. `next.config.ts` - Config fix
-3. `app/layout.tsx` - Viewport fix
-4. `tailwind.config.ts` - Dark mode config
-5. `app/globals.css` - Dark mode styles
-6. `components/Navbar.tsx` - Added theme toggle
-7. `app/login/page.tsx` - Dark mode classes
-8. `app/search/page.tsx` - Dark mode classes
-9. `app/student/[id]/page.tsx` - Dark mode classes
-10. `components/StudentCard.tsx` - Dark mode classes
-11. `components/SearchBar.tsx` - Dark mode classes
-
-## 🆕 Files Created
-
-1. `components/ThemeProvider.tsx` - Theme context provider
-2. `components/ThemeToggle.tsx` - Theme toggle button
+✅ **Any Google Account Login** - No email domain restrictions
+✅ **Smooth Search Experience** - Cursor stays focused while typing
+✅ **Responsive Design** - Works on all devices
+✅ **Production Ready** - Vercel deployment configured
+✅ **Type Safe** - Full TypeScript support
+✅ **Error Handling** - Proper error messages and recovery
 
 ---
 
-## 🚀 Next Steps
+## 🚀 Deployment Ready
 
-Restart the development server to see all changes:
+### For Vercel Deployment:
+1. Domain is configured: `https://ginfo-three.vercel.app`
+2. Add to Google OAuth Console:
+   - Authorized JavaScript origins: `https://ginfo-three.vercel.app`
+   - Authorized redirect URIs: `https://ginfo-three.vercel.app`
 
+### Local Development:
 ```bash
-# Stop current server (Ctrl+C)
-# Then restart:
 npm run dev
+# Open http://localhost:3000
+# Use any Google account to sign in
 ```
 
-Visit `http://localhost:3000` and:
-1. ✅ Try logging in with GITAM email (should work now!)
-2. ✅ Look for 🌙/☀️ toggle in top right of navbar
-3. ✅ Click to switch between light and dark modes
-4. ✅ Refresh page - theme preference is saved
+---
+
+## 📊 Performance Improvements
+
+- SearchBar uses React.memo() to prevent unnecessary re-renders
+- Focus management optimized with refs
+- State changes don't cause component remounting
+- Smooth debounced search (300ms)
 
 ---
 
-**Status**: ✅ All fixes implemented and ready to test!
+## 🔐 Security Status
+
+✅ HTTP-only secure cookies
+✅ CSRF protection with SameSite cookies
+✅ Google OAuth 2.0 authentication
+✅ TypeScript strict mode
+✅ Environment variables for sensitive data
+✅ No hardcoded secrets
+
+---
+
+## ⚡ Quick Checklist
+
+- [x] Search input focus issue fixed
+- [x] Email domain restriction removed
+- [x] Build errors resolved
+- [x] Documentation updated
+- [x] Environment configured for deployment
+- [x] OAuth ready for any Google account
+- [x] Ready for production deployment
+
+---
+
+## 🧪 Testing
+
+```bash
+# Development
+npm run dev
+
+# Build for production
+npm run build
+
+# Type checking
+npm run type-check
+
+# Linting
+npm run lint
+```
+
+---
+
+**Status**: ✅ All systems ready for deployment
+**Last Updated**: March 2026
+**Version**: Latest
+

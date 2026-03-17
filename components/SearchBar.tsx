@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState, useEffect, memo } from "react";
+import { useCallback, useState, useEffect, memo, useRef } from "react";
 
 export interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -9,6 +9,7 @@ export interface SearchBarProps {
 
 export const SearchBar = memo(function SearchBar({ onSearch, isLoading }: SearchBarProps): React.ReactElement {
   const [query, setQuery] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Debounced search - waits 300ms after user stops typing
   useEffect(() => {
@@ -26,6 +27,13 @@ export const SearchBar = memo(function SearchBar({ onSearch, isLoading }: Search
     };
   }, [query, onSearch]);
 
+  // Keep input focused when loading state or query changes
+  useEffect(() => {
+    if (inputRef.current && query && document.activeElement !== inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isLoading, query]);
+
   const handleClear = () => {
     setQuery("");
     onSearch("");
@@ -36,6 +44,7 @@ export const SearchBar = memo(function SearchBar({ onSearch, isLoading }: Search
       <div className="relative flex items-center">
         <span className="absolute left-4 text-2xl">🔍</span>
         <input
+          ref={inputRef}
           type="text"
           placeholder="Search student by name..."
           value={query}

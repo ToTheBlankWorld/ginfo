@@ -4,8 +4,7 @@ A modern, production-ready web application for searching and viewing GITAM Unive
 
 ## 🎯 Features
 
-- **Google OAuth Authentication** - Secure login with GITAM Google accounts
-- **Email Domain Verification** - Only @gitam.in and @student.gitam.edu emails allowed
+- **Google OAuth Authentication** - Secure login with any Google account
 - **Student Search** - Search students by name with real-time results
 - **Student Profiles** - Detailed view of student information including registration number, program, branch, etc.
 - **Profile Pictures** - Dynamic profile images from GITAM results server
@@ -49,9 +48,6 @@ NEXT_PUBLIC_GOOGLE_CLIENT_ID=578341894012-0edjh4oiahk0m3rv8b01peug0avulrfd.apps.
 
 # Session Configuration (use a strong random string in production)
 NEXTAUTH_SECRET=your-secret-key-here-change-in-production
-
-# Allowed Email Domains
-NEXT_PUBLIC_ALLOWED_DOMAINS=gitam.in,student.gitam.edu
 ```
 
 ### 3. CSV Data Setup
@@ -121,10 +117,8 @@ gitam-student-portal/
 1. User visits the application
 2. Login page displays Google Sign In button
 3. User authenticates with their Google account
-4. Application verifies email domain (@gitam.in or @student.gitam.edu)
-5. If valid, authentic token is stored in secure HTTP-only cookie
-6. User is redirected to search page
-7. If invalid domain, error message is displayed
+4. Secure token is stored in HTTP-only cookie
+5. User is redirected to search page
 
 ## 🔍 API Routes
 
@@ -215,7 +209,6 @@ vercel
 3. Set environment variables in Vercel dashboard:
    - `NEXT_PUBLIC_GOOGLE_CLIENT_ID`
    - `NEXTAUTH_SECRET`
-   - `NEXT_PUBLIC_ALLOWED_DOMAINS`
 4. Deploy
 
 #### Option C: Manual Deployment
@@ -277,19 +270,13 @@ If an image fails to load, a placeholder is displayed.
 
 1. Verify Google Client ID in `.env.local`
 2. Check that OAuth consent screen is configured
-3. Ensure domain is added to authorized redirect URIs
+3. Ensure domain is added to authorized JavaScript origins and redirect URIs
 
 ### Student Data Not Appearing
 
 1. Verify CSV file is at `data/students.csv`
 2. Check CSV headers match expected format
 3. Ensure CSV is properly formatted (UTF-8 encoding)
-
-### Email Verification Failed
-
-1. Confirm user's Google account email domain is @gitam.in or @student.gitam.edu
-2. Check `NEXT_PUBLIC_ALLOWED_DOMAINS` environment variable
-3. Verify email is verified in Google account
 
 ### Build Errors
 

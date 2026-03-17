@@ -97,7 +97,6 @@ Then click "SAVE AND CONTINUE" through all remaining screens.
 ```env
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=578341894012-0edjh4oiahk0m3rv8b01peug0avulrfd.apps.googleusercontent.com
 NEXTAUTH_SECRET=dev-secret-key-change-in-production
-NEXT_PUBLIC_ALLOWED_DOMAINS=gitam.in,student.gitam.edu
 ```
 
 #### Production Environment
@@ -107,7 +106,6 @@ Create `.env.production`:
 ```env
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=<your-production-client-id>
 NEXTAUTH_SECRET=<strong-random-string>
-NEXT_PUBLIC_ALLOWED_DOMAINS=gitam.in,student.gitam.edu
 ```
 
 **Generate a strong secret:**
@@ -136,27 +134,11 @@ $bytes = New-Object byte[] 32
 
 3. Click "Sign In with Google"
 
-4. Select a test user account (your GITAM email)
+4. Select any Google account
 
-5. You should be redirected to the search page if email domain is allowed
-
-### 7. Restrict to GITAM Domains
-
-The application automatically restricts access to:
-- `@gitam.in`
-- `@student.gitam.edu`
-
-Users with other email domains will see: "Only GITAM emails allowed"
+5. You should be redirected to the search page
 
 ## Advanced Configuration
-
-### Custom Email Domains
-
-To add more allowed domains, edit `.env.local`:
-
-```env
-NEXT_PUBLIC_ALLOWED_DOMAINS=gitam.in,student.gitam.edu,custom.domain.com
-```
 
 ### Client Secret for Server-Side Validation (Optional)
 
@@ -207,13 +189,13 @@ The application requests the following scopes:
 
 ### Users Can't Sign In
 
-**Cause**: User account not added to test users or domain not allowed
+**Cause**: Google Console configuration issues
 
 **Solution**:
-1. Check if user's domain is in `NEXT_PUBLIC_ALLOWED_DOMAINS`
-2. If not, add their domain to the list
-3. If app is in development, add user as test user
-4. Ask user to use their @gitam.in email, not personal Gmail
+1. Verify domain is added to "Authorized JavaScript origins"
+2. Verify domain is added to "Authorized redirect URIs"
+3. Check realm matches exactly (http/https, with/without www)
+4. Restart dev server after changing `.env.local`
 
 ### "The redirect URI is missing or does not match" in Vercel
 
