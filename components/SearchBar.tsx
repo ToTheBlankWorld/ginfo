@@ -9,14 +9,9 @@ export interface SearchBarProps {
 
 export function SearchBar({ onSearch, isLoading }: SearchBarProps): React.ReactElement {
   const [query, setQuery] = useState("");
-  const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(null);
 
   // Debounced search - waits 300ms after user stops typing
   useEffect(() => {
-    if (debounceTimer) {
-      clearTimeout(debounceTimer);
-    }
-
     if (!query.trim()) {
       onSearch("");
       return;
@@ -26,10 +21,8 @@ export function SearchBar({ onSearch, isLoading }: SearchBarProps): React.ReactE
       onSearch(query.trim());
     }, 300);
 
-    setDebounceTimer(timer);
-
     return () => {
-      if (timer) clearTimeout(timer);
+      clearTimeout(timer);
     };
   }, [query, onSearch]);
 
