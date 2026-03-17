@@ -1,13 +1,13 @@
 "use client";
 
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState, useEffect, memo } from "react";
 
 export interface SearchBarProps {
   onSearch: (query: string) => void;
   isLoading: boolean;
 }
 
-export function SearchBar({ onSearch, isLoading }: SearchBarProps): React.ReactElement {
+export const SearchBar = memo(function SearchBar({ onSearch, isLoading }: SearchBarProps): React.ReactElement {
   const [query, setQuery] = useState("");
 
   // Debounced search - waits 300ms after user stops typing
@@ -56,4 +56,4 @@ export function SearchBar({ onSearch, isLoading }: SearchBarProps): React.ReactE
       </div>
     </div>
   );
-}
+});

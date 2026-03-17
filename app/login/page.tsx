@@ -19,7 +19,7 @@ export default function LoginPage(): React.ReactElement {
           <div className="mb-8 space-y-2 border-b-2 border-clay-200 pb-6">
             <h2 className="text-xl font-semibold text-gray-900">Welcome Back</h2>
             <p className="text-sm text-gray-600">
-              Sign in with your GITAM Google account to access student records
+              Sign in with your Google account to access the student portal
             </p>
           </div>
 
@@ -27,8 +27,7 @@ export default function LoginPage(): React.ReactElement {
 
           <div className="mt-6 rounded-2xl bg-blue-50 p-4">
             <p className="text-xs text-gray-700">
-              <span className="font-semibold">Note:</span> Only users with @gitam.in or
-              @student.gitam.edu email addresses are allowed to access this portal.
+              <span className="font-semibold">Note:</span> Any Google account can be used to sign in and access the student portal.
             </p>
           </div>
 

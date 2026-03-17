@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
-import { isAllowedEmail } from "@/lib/auth";
 
 interface GoogleTokenInfo {
   aud?: string;
@@ -31,14 +30,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    if (!isAllowedEmail(email)) {
-      return NextResponse.json(
-        {
-          message: `Only GITAM emails (@gitam.in or @student.gitam.edu) are allowed. Your email: ${email}`,
-        },
-        { status: 403 }
-      );
-    }
 
     // Create response with user data
     const userResponse = NextResponse.json({
